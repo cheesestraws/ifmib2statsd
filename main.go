@@ -74,12 +74,22 @@ func main() {
 			// yes!  let's do it
 			ifOutBps := multiply(rate(old.ifHCOutOctets, old.when, results.ifHCOutOctets, results.when), 8)
 			for k, v := range ifOutBps {
-				gauge(statters, fmt.Sprintf("%v.interfaces.%v.out", results.hostname, k), int64(v))
+				gauge(statters, fmt.Sprintf("%v.interfaces.%v.%v.out", results.hostname, results.ifType[k], k), int64(v))
 			}
 			ifInBps := multiply(rate(old.ifHCInOctets, old.when, results.ifHCInOctets, results.when), 8)
 			for k, v := range ifInBps {
-				gauge(statters, fmt.Sprintf("%v.interfaces.%v.in", results.hostname, k), int64(v))
+				gauge(statters, fmt.Sprintf("%v.interfaces.%v.%v.in", results.hostname, results.ifType[k], k), int64(v))
 			}
+			ifOutErrors := rate(old.ifOutErrors, old.when, results.ifOutErrors, results.when)
+			for k, v := range ifOutErrors {
+				gauge(statters, fmt.Sprintf("%v.interfaces.%v.%v.out-errors", results.hostname, results.ifType[k], k), int64(v))
+			}
+			ifInErrors := rate(old.ifOutErrors, old.when, results.ifInErrors, results.when)
+			for k, v := range ifInErrors {
+				gauge(statters, fmt.Sprintf("%v.interfaces.%v.%v.in-errors", results.hostname, results.ifType[k], k), int64(v))
+			}
+
+
 
 			
 			oldMeasurements[ip] = results
