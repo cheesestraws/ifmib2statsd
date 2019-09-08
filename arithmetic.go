@@ -2,7 +2,6 @@ package main
 
 import (
 	"time"
-	"log"
 )
 
 // Arithmetic over maps of integers
@@ -49,7 +48,6 @@ func multiply(data map[string]uint64, by uint64) map[string]uint64 {
 func rate(older map[string]uint64, then time.Time, newer map[string]uint64, now time.Time) map[string]uint64 {
 	duration := now.Sub(then)
 	var divisor float64 = float64(duration) / float64(time.Second)
-	log.Print("dividing by %v seconds", divisor)
 	
 	diffs := diff(older, newer)
 	return div(diffs, divisor)

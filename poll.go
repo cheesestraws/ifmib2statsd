@@ -166,7 +166,7 @@ func Poll(ip string, community string) *PollResults {
 		return nil
 	} else {
 		for _, p := range pdus {
-			ifType[oididx(p.Name)] = ianaIFType[p.Value.(int)]
+			ifType[ifName[oididx(p.Name)]] = ianaIFType[p.Value.(int)]
 			fmt.Printf("%v => %v\n", oididx(p.Name), ianaIFType[p.Value.(int)])
 		}
 	}
@@ -179,8 +179,8 @@ func Poll(ip string, community string) *PollResults {
 		return nil
 	} else {
 		for _, p := range pdus {
-			ifHCInOctets[oididx(p.Name)] = p.Value.(uint64)
-			fmt.Printf("%v => %v\n", oididx(p.Name), p.Value.(uint64))
+			ifHCInOctets[ifName[oididx(p.Name)]] = p.Value.(uint64)
+			fmt.Printf("%v => %v\n", ifName[oididx(p.Name)], p.Value.(uint64))
 		}
 	}
 	
@@ -192,7 +192,7 @@ func Poll(ip string, community string) *PollResults {
 		return nil
 	} else {
 		for _, p := range pdus {
-			ifHCOutOctets[oididx(p.Name)] = p.Value.(uint64)
+			ifHCOutOctets[ifName[oididx(p.Name)]] = p.Value.(uint64)
 			fmt.Printf("%v => %v\n", oididx(p.Name), p.Value.(uint64))
 		}
 	}
@@ -205,7 +205,7 @@ func Poll(ip string, community string) *PollResults {
 		return nil
 	} else {
 		for _, p := range pdus {
-			ifInErrors[oididx(p.Name)] = uint64(p.Value.(uint))
+			ifInErrors[ifName[oididx(p.Name)]] = uint64(p.Value.(uint))
 			fmt.Printf("%v => %v\n", oididx(p.Name), p.Value.(uint))
 		}
 	}
@@ -218,7 +218,7 @@ func Poll(ip string, community string) *PollResults {
 		return nil
 	} else {
 		for _, p := range pdus {
-			ifOutErrors[oididx(p.Name)] = uint64(p.Value.(uint))
+			ifOutErrors[ifName[oididx(p.Name)]] = uint64(p.Value.(uint))
 			fmt.Printf("%v => %v\n", oididx(p.Name), p.Value.(uint))
 		}
 	}

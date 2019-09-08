@@ -44,6 +44,7 @@ func gauge(ss []statsd.SubStatter, name string, value int64) {
 
 func main() {
 	statters := initStatters(statsdServers, prefix)
+	oldMeasurements := make(map[string]*PollResults)
 
 	t := time.NewTicker(interval)
 	for _ = range t.C {
@@ -61,6 +62,28 @@ func main() {
 			for id, usage := range results.cpuUsage {
 				gauge(statters, fmt.Sprintf("%v.cpu.%v", results.hostname, id), int64(usage))
 			}
+			
+			// Do we have an old measurement for this target?  If so, we can calculate
+			// some rates.
+			old := oldMeasurements[ip]
+			if old == nil {
+				oldMeasurements[ip] = results
+				continue
+			}
+			
+			// yes!  let's do it
+			ifOutBps := multiply(rate(old.ifHCOutOctets, old.when, results.ifHCOutOctets, results.when), 8)
+			for k, v := range ifOutBps {
+				gauge(statters, fmt.Sprintf("%v.interfaces.%v.out", results.hostname, k), int64(v))
+			}
+			ifInBps := multiply(rate(old.ifHCInOctets, old.when, results.ifHCInOctets, results.when), 8)
+			for k, v := range ifInBps {
+				gauge(statters, fmt.Sprintf("%v.interfaces.%v.in", results.hostname, k), int64(v))
+			}
+
+			
+			oldMeasurements[ip] = results
+
 		}
 	}
 }
