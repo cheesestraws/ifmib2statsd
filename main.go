@@ -55,12 +55,12 @@ func main() {
 			results := Poll(ip, community)
 			
 			// memory usage first
-			gauge(statters, fmt.Sprintf("%v.memory.used", results.hostname), int64(results.ramUsed))
-			gauge(statters, fmt.Sprintf("%v.memory.avail", results.hostname), int64(results.ramAvail))
+			gauge(statters, fmt.Sprintf("%v.memory.used", results.statname), int64(results.ramUsed))
+			gauge(statters, fmt.Sprintf("%v.memory.avail", results.statname), int64(results.ramAvail))
 			
 			// and cpu
 			for id, usage := range results.cpuUsage {
-				gauge(statters, fmt.Sprintf("%v.cpu.%v", results.hostname, id), int64(usage))
+				gauge(statters, fmt.Sprintf("%v.cpu.%v", results.statname, id), int64(usage))
 			}
 			
 			// Do we have an old measurement for this target?  If so, we can calculate
@@ -74,19 +74,19 @@ func main() {
 			// yes!  let's do it
 			ifOutBps := multiply(rate(old.ifHCOutOctets, old.when, results.ifHCOutOctets, results.when), 8)
 			for k, v := range ifOutBps {
-				gauge(statters, fmt.Sprintf("%v.interfaces.%v.%v.out", results.hostname, results.ifType[k], k), int64(v))
+				gauge(statters, fmt.Sprintf("%v.interfaces.%v.%v.out", results.statname, results.ifType[k], k), int64(v))
 			}
 			ifInBps := multiply(rate(old.ifHCInOctets, old.when, results.ifHCInOctets, results.when), 8)
 			for k, v := range ifInBps {
-				gauge(statters, fmt.Sprintf("%v.interfaces.%v.%v.in", results.hostname, results.ifType[k], k), int64(v))
+				gauge(statters, fmt.Sprintf("%v.interfaces.%v.%v.in", results.statname, results.ifType[k], k), int64(v))
 			}
 			ifOutErrors := rate(old.ifOutErrors, old.when, results.ifOutErrors, results.when)
 			for k, v := range ifOutErrors {
-				gauge(statters, fmt.Sprintf("%v.interfaces.%v.%v.out-errors", results.hostname, results.ifType[k], k), int64(v))
+				gauge(statters, fmt.Sprintf("%v.interfaces.%v.%v.out-errors", results.statname, results.ifType[k], k), int64(v))
 			}
 			ifInErrors := rate(old.ifOutErrors, old.when, results.ifInErrors, results.when)
 			for k, v := range ifInErrors {
-				gauge(statters, fmt.Sprintf("%v.interfaces.%v.%v.in-errors", results.hostname, results.ifType[k], k), int64(v))
+				gauge(statters, fmt.Sprintf("%v.interfaces.%v.%v.in-errors", results.statname, results.ifType[k], k), int64(v))
 			}
 
 

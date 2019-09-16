@@ -24,6 +24,7 @@ func oididx(oid string) string {
 type PollResults struct {
 	when time.Time
 	hostname string
+	statname string
 	
 	cpuUsage map[string]int
 	ramTotal uint64
@@ -227,6 +228,7 @@ func Poll(ip string, community string) *PollResults {
 	return &PollResults{
 		when: time.Now(),
 		hostname: hostname,
+		statname: strings.Replace(hostname, ".", "_", -1),
 		
 		cpuUsage: cpuUsage,
 		ramTotal: ramTotal,
