@@ -43,6 +43,7 @@ func Poll(ip string, community string) *PollResults {
 	gosnmp.Default.Target = ip
 	gosnmp.Default.Community = community
 	gosnmp.Default.Timeout = time.Duration(5 * time.Second)
+	gosnmp.Default.Version = gosnmp.Version2c
 	
 	err := gosnmp.Default.Connect()
 	if err != nil {
