@@ -53,6 +53,9 @@ func main() {
 			community := communities[i]
 			
 			results := Poll(ip, community)
+			if results == nil {
+				continue
+			}
 			
 			// memory usage first
 			gauge(statters, fmt.Sprintf("%v.memory.used", results.statname), int64(results.ramUsed))
