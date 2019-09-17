@@ -9,8 +9,8 @@ import (
 )
 
 var statsdServers []string = []string{"192.168.0.53:8125"}
-var targets []string = []string{"192.168.0.1", "192.168.0.254", "ap.lan", "pf.speakersassociates.com"}
-var communities []string = []string{"public", "public", "public", "public"}
+var targets []string = []string{"192.168.0.1", "192.168.0.254", "ap.lan"}
+var communities []string = []string{"public", "public", "public"}
 var prefix = "network-devices"
 var interval time.Duration = 10 * time.Second
 
